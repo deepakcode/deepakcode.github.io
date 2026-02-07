@@ -102,47 +102,59 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                     }),
                 }),
 
-                // Mobile Menu Overlay - Portal Based Tree View
+                // Mobile Menu Overlay - Ground-up Rewrite
                 mobileMenuOpen && ReactDOM.createPortal(
                     jsx("div", {
                         className: "fixed inset-0 z-[100] bg-background md:hidden flex flex-col",
                         children: jsxs("div", {
                             className: "flex flex-col h-full",
                             children: [
-                                // Mobile Header
+                                // Header - Matches Desktop Style
                                 jsxs("div", {
-                                    className: "flex items-center justify-between px-4 h-14 border-b border-border shrink-0",
+                                    className: "flex items-center justify-between px-6 h-16 border-b border-border shrink-0 backdrop-blur-sm",
                                     children: [
-                                        jsx("span", { className: "font-bold text-lg", children: config.name }),
+                                        jsx("span", {
+                                            className: "font-bold text-xl tracking-tight text-primary",
+                                            children: config.name
+                                        }),
                                         jsx(Button, {
                                             variant: "ghost",
                                             size: "icon",
+                                            className: "hover:bg-accent rounded-full",
                                             onClick: () => setMobileMenuOpen(false),
-                                            children: jsx(CloseIcon, { className: "h-5 w-5" })
+                                            children: jsx(CloseIcon, { className: "h-6 w-6" })
                                         })
                                     ]
                                 }),
 
-                                // Scrollable Navigation Content (Tree View)
+                                // Navigation Tree
                                 jsx("div", {
-                                    className: "flex-1 overflow-y-auto p-4 pb-20",
+                                    className: "flex-1 overflow-y-auto px-4 py-6 pb-24",
                                     children: jsxs("div", {
-                                        className: "flex flex-col gap-2",
+                                        className: "flex flex-col gap-3",
                                         children: [
-                                            jsx("h2", { className: "text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4 px-2", children: "Navigation" }),
+                                            jsx("h2", {
+                                                className: "text-[11px] font-bold uppercase tracking-widest text-muted-foreground/50 px-2 mb-2",
+                                                children: "Navigation Menu"
+                                            }),
 
-                                            // 1. CATEGORIES (Main Tree Nodes)
+                                            // 1. TOP-LEVEL CATEGORIES
                                             categories.map(cat => {
+                                                const isActive = currentCategory === cat.id;
                                                 const isExposed = expandedCategory === cat.id;
+
                                                 return jsxs("div", {
-                                                    className: "flex flex-col",
+                                                    className: classNames(
+                                                        "flex flex-col rounded-2xl transition-all duration-300 overflow-hidden",
+                                                        isExposed ? "bg-muted/30 border border-border/50 shadow-sm" : "bg-transparent border border-transparent"
+                                                    ),
                                                     children: [
-                                                        // Category Header
+                                                        // Category Header - Clear, Bold Header
                                                         jsxs(Button, {
                                                             variant: "ghost",
                                                             className: classNames(
-                                                                "flex items-center justify-between w-full h-11 px-3 rounded-xl transition-all",
-                                                                isExposed ? "bg-accent/50 text-foreground font-semibold" : "text-foreground/70"
+                                                                "flex items-center justify-between w-full h-14 px-4 rounded-none hover:bg-muted/50 transition-colors",
+                                                                isExposed ? "text-primary font-bold" : "text-foreground font-semibold"
                                                             ),
                                                             onClick: () => {
                                                                 if (expandedCategory === cat.id) {
@@ -154,50 +166,51 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                                                 setExpandedSection(null);
                                                             },
                                                             children: [
-                                                                jsx("span", { className: "text-sm", children: cat.title }),
-                                                                isExposed ? jsx(ChevronDown, {}) : jsx(ChevronRight, {})
+                                                                jsx("span", { className: "text-base", children: cat.title }),
+                                                                jsx("div", {
+                                                                    className: classNames("transition-transform duration-300", isExposed ? "rotate-90" : ""),
+                                                                    children: jsx(ChevronRight, { className: "h-4 w-4" })
+                                                                })
                                                             ]
                                                         }),
 
-                                                        // 2. SUB-CATEGORIES (Sections) - Recursive/Inline expansion
+                                                        // 2. SUB-CATEGORIES (SECTIONS) - Visible only when Category is expanded
                                                         isExposed && jsxs("div", {
-                                                            className: "ml-4 mt-1 border-l border-border/50 pl-2 flex flex-col gap-1",
+                                                            className: "p-2 pt-0 flex flex-col gap-1 animate-in fade-in slide-in-from-top-2 duration-300",
                                                             children: [
-                                                                // Check if we have data for this category
                                                                 currentCategory === cat.id && categoryData?.sections ?
                                                                     categoryData.sections.map((section, sIdx) => {
                                                                         const isSectionExposed = expandedSection === section.title;
+
                                                                         return jsxs("div", {
                                                                             className: "flex flex-col",
                                                                             children: [
-                                                                                // Section Header
+                                                                                // Section Handle - Colored for Distinction
                                                                                 jsxs(Button, {
                                                                                     variant: "ghost",
                                                                                     className: classNames(
-                                                                                        "flex items-center justify-between h-9 px-2 rounded-lg text-xs font-medium w-full text-left",
-                                                                                        isSectionExposed ? "text-primary bg-primary/5" : "text-muted-foreground hover:text-foreground"
+                                                                                        "flex items-center justify-between h-10 w-full px-4 rounded-xl text-left transition-colors",
+                                                                                        isSectionExposed ? "text-primary font-bold bg-primary/5" : "text-muted-foreground font-medium hover:text-foreground hover:bg-muted/50"
                                                                                     ),
                                                                                     onClick: () => setExpandedSection(isSectionExposed ? null : section.title),
                                                                                     children: [
-                                                                                        jsx("span", { children: section.title }),
-                                                                                        isSectionExposed ? jsx(ChevronDown, {}) : jsx(ChevronRight, {})
+                                                                                        jsx("span", { className: "text-sm", children: section.title }),
+                                                                                        jsx("div", {
+                                                                                            className: classNames("transition-transform duration-300 opacity-50", isSectionExposed ? "rotate-90" : ""),
+                                                                                            children: jsx(ChevronRight, { className: "h-3 w-3" })
+                                                                                        })
                                                                                     ]
                                                                                 }),
 
-                                                                                // 3. ITEMS (Leaves)
+                                                                                // 3. ITEMS - Pure text items with clear depth
                                                                                 isSectionExposed && jsxs("div", {
-                                                                                    className: "ml-3 mt-1 flex flex-col gap-1 border-l border-border/30 pl-3",
+                                                                                    className: "flex flex-col mt-1 ml-4 border-l border-primary/20",
                                                                                     children: [
                                                                                         section.children?.map((item, iIdx) =>
                                                                                             jsx(Link, {
                                                                                                 to: item.href || `/${cat.id}/${item.id}`,
-                                                                                                className: "flex items-center gap-2 h-8 px-2 rounded-md text-[13px] text-muted-foreground hover:text-foreground transition-colors",
-                                                                                                children: jsxs(React.Fragment, {
-                                                                                                    children: [
-                                                                                                        jsx(FileText, {}),
-                                                                                                        jsx("span", { className: "truncate", children: item.title })
-                                                                                                    ]
-                                                                                                })
+                                                                                                className: "flex items-center w-full min-h-[44px] px-6 py-2 text-[15px] font-medium text-muted-foreground/80 hover:text-primary transition-colors active:text-primary",
+                                                                                                children: item.title
                                                                                             }, iIdx)
                                                                                         )
                                                                                     ]
@@ -205,7 +218,7 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                                                             ]
                                                                         }, sIdx);
                                                                     })
-                                                                    : jsx("div", { className: "p-3 text-xs text-muted-foreground animate-pulse", children: "Updating sections..." })
+                                                                    : jsx("div", { className: "p-6 text-center text-xs text-muted-foreground animate-pulse", children: "Fetching sub-categories..." })
                                                             ]
                                                         })
                                                     ]
