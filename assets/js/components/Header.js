@@ -138,19 +138,20 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                                 children: "Navigation Menu"
                                             }),
 
-                                            // 1. TOP-LEVEL CATEGORIES (Indent: Base)
+                                            // 1. TOP-LEVEL CATEGORIES (Leftmost: 16px)
                                             categories.map(cat => {
                                                 const isExposed = expandedCategory === cat.id;
 
                                                 return jsxs("div", {
                                                     className: "flex flex-col",
                                                     children: [
-                                                        jsxs(Button, {
-                                                            variant: "ghost",
+                                                        jsxs("button", {
                                                             className: classNames(
-                                                                "flex items-center justify-between w-full h-12 pl-6 pr-6 rounded-none hover:bg-muted/50 transition-colors justify-start text-[15px] cursor-pointer",
-                                                                isExposed ? "text-primary/70 font-medium" : "text-foreground font-medium"
+                                                                "flex items-center w-full h-11 pr-4 rounded-none transition-colors text-left outline-none border-none bg-transparent cursor-pointer",
+                                                                "text-[15px] font-normal leading-tight", // Absolute font parity
+                                                                isExposed ? "text-primary" : "text-foreground"
                                                             ),
+                                                            style: { paddingLeft: '16px' }, // Level 1
                                                             onClick: () => {
                                                                 if (expandedCategory === cat.id) {
                                                                     setExpandedCategory(null);
@@ -161,15 +162,15 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                                                 setExpandedSection(null);
                                                             },
                                                             children: [
-                                                                cat.title,
+                                                                jsx("span", { className: "flex-1", children: cat.title }),
                                                                 jsx("div", {
-                                                                    className: classNames("transition-transform duration-300 ml-auto opacity-40", isExposed ? "rotate-90" : ""),
-                                                                    children: jsx(ChevronRight, { className: "h-4 w-4" })
+                                                                    className: classNames("transition-transform duration-300 ml-2 opacity-30", isExposed ? "rotate-90" : ""),
+                                                                    children: jsx(ChevronRight, { className: "h-3.5 w-3.5" })
                                                                 })
                                                             ]
                                                         }),
 
-                                                        // 2. SUB-CATEGORIES (Indent: pl-12)
+                                                        // 2. SUB-CATEGORIES (+2 chars: 16px + 16px = 32px)
                                                         isExposed && jsxs("div", {
                                                             className: "flex flex-col",
                                                             children: [
@@ -180,30 +181,36 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                                                         return jsxs("div", {
                                                                             className: "flex flex-col",
                                                                             children: [
-                                                                                jsxs(Button, {
-                                                                                    variant: "ghost",
+                                                                                jsxs("button", {
                                                                                     className: classNames(
-                                                                                        "flex items-center justify-between h-11 w-full pl-12 pr-6 rounded-none text-left transition-colors justify-start text-[15px] cursor-pointer",
-                                                                                        isSectionExposed ? "text-primary font-medium bg-primary/5" : "text-foreground/80 font-medium hover:bg-muted/50"
+                                                                                        "flex items-center w-full h-11 pr-4 rounded-none text-left transition-colors outline-none border-none bg-transparent cursor-pointer",
+                                                                                        "text-[15px] font-normal leading-tight", // Absolute font parity
+                                                                                        isSectionExposed ? "text-primary bg-primary/5" : "text-foreground/80 hover:bg-muted/30"
                                                                                     ),
+                                                                                    style: { paddingLeft: '32px' }, // Level 2
                                                                                     onClick: () => setExpandedSection(isSectionExposed ? null : section.title),
                                                                                     children: [
-                                                                                        section.title,
+                                                                                        jsx("span", { className: "flex-1", children: section.title }),
                                                                                         jsx("div", {
-                                                                                            className: classNames("transition-transform duration-300 ml-auto opacity-30", isSectionExposed ? "rotate-90" : ""),
-                                                                                            children: jsx(ChevronRight, { className: "h-3.5 w-3.5" })
+                                                                                            className: classNames("transition-transform duration-300 ml-2 opacity-20", isSectionExposed ? "rotate-90" : ""),
+                                                                                            children: jsx(ChevronRight, { className: "h-3 w-3" })
                                                                                         })
                                                                                     ]
                                                                                 }),
 
-                                                                                // 3. ITEMS (Indent: pl-20)
+                                                                                // 3. ITEMS (+2 chars: 32px + 16px = 48px)
                                                                                 isSectionExposed && jsxs("div", {
-                                                                                    className: "flex flex-col border-l border-border/20 ml-12",
+                                                                                    className: "flex flex-col",
                                                                                     children: [
                                                                                         section.children?.map((item, iIdx) =>
                                                                                             jsx(Link, {
                                                                                                 to: item.href || `/${cat.id}/${item.id}`,
-                                                                                                className: "flex items-center w-full min-h-[44px] pl-20 pr-6 py-2 text-[15px] font-medium text-muted-foreground/80 hover:text-primary transition-colors active:text-primary cursor-pointer",
+                                                                                                className: classNames(
+                                                                                                    "flex items-center w-full min-h-[44px] pr-4 transition-colors text-left",
+                                                                                                    "text-[15px] font-normal leading-tight", // Absolute font parity
+                                                                                                    "text-muted-foreground/80 hover:text-primary"
+                                                                                                ),
+                                                                                                style: { paddingLeft: '48px' }, // Level 3
                                                                                                 children: item.title
                                                                                             }, iIdx)
                                                                                         )
@@ -212,7 +219,7 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                                                             ]
                                                                         }, sIdx);
                                                                     })
-                                                                    : jsx("div", { className: "py-6 pl-12 text-[13px] text-muted-foreground/60", children: "Syncing..." })
+                                                                    : jsx("div", { className: "py-4 text-[13px] text-muted-foreground/60", style: { paddingLeft: '32px' }, children: "Loading..." })
                                                             ]
                                                         })
                                                     ]
