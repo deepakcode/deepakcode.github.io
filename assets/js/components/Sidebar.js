@@ -33,7 +33,7 @@ export default function Sidebar({ className, categoryData, currentCategory }) {
             className
         ),
         children: jsx(ScrollArea, {
-            className: "h-full py-6 pr-4 pl-6",
+            className: classNames("h-full", className ? "p-0" : "py-6 pr-4 pl-6"),
             children: jsx("div", {
                 className: "flex flex-col gap-6",
                 children: navSections.length > 0 ? navSections.map((section, sectionIndex) =>

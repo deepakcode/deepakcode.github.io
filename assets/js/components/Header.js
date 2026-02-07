@@ -1,4 +1,4 @@
-import { React, JSX, classNames, Button, ThemeToggle, Link, useState } from '../modules.js';
+import { React, ReactDOM, JSX, classNames, Button, ThemeToggle, Link, useState, useEffect, useLocation } from '../modules.js';
 import Sidebar from './Sidebar.js';
 
 const { jsx, jsxs } = JSX;
@@ -12,6 +12,38 @@ const CloseIcon = (props) => jsx("svg", { ...props, xmlns: "http://www.w3.org/20
 export default function Header({ categories = [], currentCategory, onCategoryChange, categoryData }) {
     const config = window.EasyInterview?.SITE_CONFIG || { name: "Easy Interview", shortName: "EI", githubUrl: "#" };
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [expandedCategory, setExpandedCategory] = useState(currentCategory);
+    const [expandedSection, setExpandedSection] = useState(null);
+
+    // Sync expandedCategory with currentCategory when it changes from outside (e.g. desktop)
+    useEffect(() => {
+        if (currentCategory) {
+            setExpandedCategory(currentCategory);
+        }
+    }, [currentCategory]);
+
+    // Close mobile menu on path changes (actual navigation to item)
+    const location = useLocation ? useLocation() : { pathname: window.location.pathname };
+    useEffect(() => {
+        setMobileMenuOpen(false);
+    }, [location.pathname]);
+
+    // Prevent body scroll when menu is open
+    useEffect(() => {
+        if (mobileMenuOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [mobileMenuOpen]);
+
+    // Icons for navigation
+    const ChevronDown = () => jsx("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", children: jsx("path", { d: "m6 9 6 6 6-6" }) });
+    const ChevronRight = () => jsx("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", children: jsx("path", { d: "m9 18 6-6-6-6" }) });
+    const FileText = () => jsx("svg", { xmlns: "http://www.w3.org/2000/svg", width: "14", height: "14", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", children: jsxs("g", { children: [jsx("path", { d: "M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" }), jsx("polyline", { points: "14 2 14 8 20 8" }), jsx("line", { x1: "16", x2: "8", y1: "13", y2: "13" }), jsx("line", { x1: "16", x2: "8", y1: "17", y2: "17" }), jsx("line", { x1: "10", x2: "8", y1: "9", y2: "9" })] }) });
 
     return jsx("header", {
         className:
@@ -70,31 +102,123 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                     }),
                 }),
 
-                // Mobile Menu Overlay (Simple Implementation)
-                mobileMenuOpen && jsx("div", {
-                    className: "fixed inset-0 z-50 bg-background md:hidden p-4",
-                    children: jsxs("div", {
-                        className: "flex flex-col h-full",
-                        children: [
-                            jsxs("div", {
-                                className: "flex items-center justify-between mb-8",
-                                children: [
-                                    jsx("span", { className: "font-bold text-lg", children: config.name }),
-                                    jsx(Button, {
-                                        variant: "ghost",
-                                        size: "icon",
-                                        onClick: () => setMobileMenuOpen(false),
-                                        children: jsx(CloseIcon, { className: "h-5 w-5" })
+                // Mobile Menu Overlay - Portal Based Tree View
+                mobileMenuOpen && ReactDOM.createPortal(
+                    jsx("div", {
+                        className: "fixed inset-0 z-[100] bg-background md:hidden flex flex-col",
+                        children: jsxs("div", {
+                            className: "flex flex-col h-full",
+                            children: [
+                                // Mobile Header
+                                jsxs("div", {
+                                    className: "flex items-center justify-between px-4 h-14 border-b border-border shrink-0",
+                                    children: [
+                                        jsx("span", { className: "font-bold text-lg", children: config.name }),
+                                        jsx(Button, {
+                                            variant: "ghost",
+                                            size: "icon",
+                                            onClick: () => setMobileMenuOpen(false),
+                                            children: jsx(CloseIcon, { className: "h-5 w-5" })
+                                        })
+                                    ]
+                                }),
+
+                                // Scrollable Navigation Content (Tree View)
+                                jsx("div", {
+                                    className: "flex-1 overflow-y-auto p-4 pb-20",
+                                    children: jsxs("div", {
+                                        className: "flex flex-col gap-2",
+                                        children: [
+                                            jsx("h2", { className: "text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4 px-2", children: "Navigation" }),
+
+                                            // 1. CATEGORIES (Main Tree Nodes)
+                                            categories.map(cat => {
+                                                const isExposed = expandedCategory === cat.id;
+                                                return jsxs("div", {
+                                                    className: "flex flex-col",
+                                                    children: [
+                                                        // Category Header
+                                                        jsxs(Button, {
+                                                            variant: "ghost",
+                                                            className: classNames(
+                                                                "flex items-center justify-between w-full h-11 px-3 rounded-xl transition-all",
+                                                                isExposed ? "bg-accent/50 text-foreground font-semibold" : "text-foreground/70"
+                                                            ),
+                                                            onClick: () => {
+                                                                if (expandedCategory === cat.id) {
+                                                                    setExpandedCategory(null);
+                                                                } else {
+                                                                    setExpandedCategory(cat.id);
+                                                                    if (onCategoryChange) onCategoryChange(cat.id);
+                                                                }
+                                                                setExpandedSection(null);
+                                                            },
+                                                            children: [
+                                                                jsx("span", { className: "text-sm", children: cat.title }),
+                                                                isExposed ? jsx(ChevronDown, {}) : jsx(ChevronRight, {})
+                                                            ]
+                                                        }),
+
+                                                        // 2. SUB-CATEGORIES (Sections) - Recursive/Inline expansion
+                                                        isExposed && jsxs("div", {
+                                                            className: "ml-4 mt-1 border-l border-border/50 pl-2 flex flex-col gap-1",
+                                                            children: [
+                                                                // Check if we have data for this category
+                                                                currentCategory === cat.id && categoryData?.sections ?
+                                                                    categoryData.sections.map((section, sIdx) => {
+                                                                        const isSectionExposed = expandedSection === section.title;
+                                                                        return jsxs("div", {
+                                                                            className: "flex flex-col",
+                                                                            children: [
+                                                                                // Section Header
+                                                                                jsxs(Button, {
+                                                                                    variant: "ghost",
+                                                                                    className: classNames(
+                                                                                        "flex items-center justify-between h-9 px-2 rounded-lg text-xs font-medium w-full text-left",
+                                                                                        isSectionExposed ? "text-primary bg-primary/5" : "text-muted-foreground hover:text-foreground"
+                                                                                    ),
+                                                                                    onClick: () => setExpandedSection(isSectionExposed ? null : section.title),
+                                                                                    children: [
+                                                                                        jsx("span", { children: section.title }),
+                                                                                        isSectionExposed ? jsx(ChevronDown, {}) : jsx(ChevronRight, {})
+                                                                                    ]
+                                                                                }),
+
+                                                                                // 3. ITEMS (Leaves)
+                                                                                isSectionExposed && jsxs("div", {
+                                                                                    className: "ml-3 mt-1 flex flex-col gap-1 border-l border-border/30 pl-3",
+                                                                                    children: [
+                                                                                        section.children?.map((item, iIdx) =>
+                                                                                            jsx(Link, {
+                                                                                                to: item.href || `/${cat.id}/${item.id}`,
+                                                                                                className: "flex items-center gap-2 h-8 px-2 rounded-md text-[13px] text-muted-foreground hover:text-foreground transition-colors",
+                                                                                                children: jsxs(React.Fragment, {
+                                                                                                    children: [
+                                                                                                        jsx(FileText, {}),
+                                                                                                        jsx("span", { className: "truncate", children: item.title })
+                                                                                                    ]
+                                                                                                })
+                                                                                            }, iIdx)
+                                                                                        )
+                                                                                    ]
+                                                                                })
+                                                                            ]
+                                                                        }, sIdx);
+                                                                    })
+                                                                    : jsx("div", { className: "p-3 text-xs text-muted-foreground animate-pulse", children: "Updating sections..." })
+                                                            ]
+                                                        })
+                                                    ]
+                                                }, cat.id);
+                                            })
+                                        ]
                                     })
-                                ]
-                            }),
-                            jsx("div", {
-                                className: "flex-1 overflow-auto",
-                                children: jsx(Sidebar, { categoryData, currentCategory }) // Pass data to mobile sidebar
-                            })
-                        ]
-                    })
-                }),
+                                })
+                            ]
+                        })
+                    }),
+                    document.body
+                ),
 
                 // Mobile Logo (visible when menu closed)
                 jsx("div", {
