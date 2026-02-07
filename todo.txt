@@ -1,4 +1,0 @@
-0. set homepage
-1. remove hardcoded nav for mobile, fix mobile nav menu
-2. Clean up .js file
-3. Make this publishable
