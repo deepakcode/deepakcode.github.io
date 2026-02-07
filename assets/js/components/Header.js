@@ -102,16 +102,16 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                     }),
                 }),
 
-                // Mobile Menu Overlay - Ground-up Rewrite
+                // Mobile Menu Overlay - Strictly Symmetrical & Indented
                 mobileMenuOpen && ReactDOM.createPortal(
                     jsx("div", {
                         className: "fixed inset-0 z-[100] bg-background md:hidden flex flex-col",
                         children: jsxs("div", {
                             className: "flex flex-col h-full",
                             children: [
-                                // Header - Matches Desktop Style
+                                // Header - Matches Site Style
                                 jsxs("div", {
-                                    className: "flex items-center justify-between px-6 h-16 border-b border-border shrink-0 backdrop-blur-sm",
+                                    className: "flex items-center justify-between px-6 h-16 border-b border-border shrink-0",
                                     children: [
                                         jsx("span", {
                                             className: "font-bold text-xl tracking-tight text-primary",
@@ -127,34 +127,29 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                     ]
                                 }),
 
-                                // Navigation Tree
+                                // Navigation Tree - Progressive Indentation
                                 jsx("div", {
-                                    className: "flex-1 overflow-y-auto px-4 py-6 pb-24",
+                                    className: "flex-1 overflow-y-auto pt-6 pb-32",
                                     children: jsxs("div", {
-                                        className: "flex flex-col gap-3",
+                                        className: "flex flex-col",
                                         children: [
                                             jsx("h2", {
-                                                className: "text-[11px] font-bold uppercase tracking-widest text-muted-foreground/50 px-2 mb-2",
+                                                className: "text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 px-6 mb-4",
                                                 children: "Navigation Menu"
                                             }),
 
-                                            // 1. TOP-LEVEL CATEGORIES
+                                            // 1. TOP-LEVEL CATEGORIES (Indent: 0)
                                             categories.map(cat => {
-                                                const isActive = currentCategory === cat.id;
                                                 const isExposed = expandedCategory === cat.id;
 
                                                 return jsxs("div", {
-                                                    className: classNames(
-                                                        "flex flex-col rounded-2xl transition-all duration-300 overflow-hidden",
-                                                        isExposed ? "bg-muted/30 border border-border/50 shadow-sm" : "bg-transparent border border-transparent"
-                                                    ),
+                                                    className: "flex flex-col",
                                                     children: [
-                                                        // Category Header - Clear, Bold Header
                                                         jsxs(Button, {
                                                             variant: "ghost",
                                                             className: classNames(
-                                                                "flex items-center justify-between w-full h-14 px-4 rounded-none hover:bg-muted/50 transition-colors",
-                                                                isExposed ? "text-primary font-bold" : "text-foreground font-semibold"
+                                                                "flex items-center justify-between w-full h-12 px-6 rounded-none hover:bg-muted/50 transition-colors justify-start",
+                                                                isExposed ? "text-primary/70 font-medium" : "text-foreground font-medium"
                                                             ),
                                                             onClick: () => {
                                                                 if (expandedCategory === cat.id) {
@@ -166,17 +161,17 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                                                 setExpandedSection(null);
                                                             },
                                                             children: [
-                                                                jsx("span", { className: "text-base", children: cat.title }),
+                                                                jsx("span", { className: "text-[15px]", children: cat.title }),
                                                                 jsx("div", {
-                                                                    className: classNames("transition-transform duration-300", isExposed ? "rotate-90" : ""),
+                                                                    className: classNames("transition-transform duration-300 ml-auto opacity-40", isExposed ? "rotate-90" : ""),
                                                                     children: jsx(ChevronRight, { className: "h-4 w-4" })
                                                                 })
                                                             ]
                                                         }),
 
-                                                        // 2. SUB-CATEGORIES (SECTIONS) - Visible only when Category is expanded
+                                                        // 2. SUB-CATEGORIES (Indent: 16px)
                                                         isExposed && jsxs("div", {
-                                                            className: "p-2 pt-0 flex flex-col gap-1 animate-in fade-in slide-in-from-top-2 duration-300",
+                                                            className: "flex flex-col bg-muted/5",
                                                             children: [
                                                                 currentCategory === cat.id && categoryData?.sections ?
                                                                     categoryData.sections.map((section, sIdx) => {
@@ -185,31 +180,30 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                                                         return jsxs("div", {
                                                                             className: "flex flex-col",
                                                                             children: [
-                                                                                // Section Handle - Colored for Distinction
                                                                                 jsxs(Button, {
                                                                                     variant: "ghost",
                                                                                     className: classNames(
-                                                                                        "flex items-center justify-between h-10 w-full px-4 rounded-xl text-left transition-colors",
-                                                                                        isSectionExposed ? "text-primary font-bold bg-primary/5" : "text-muted-foreground font-medium hover:text-foreground hover:bg-muted/50"
+                                                                                        "flex items-center justify-between h-11 w-full pl-10 pr-6 rounded-none text-left transition-colors justify-start",
+                                                                                        isSectionExposed ? "text-primary font-medium bg-primary/5" : "text-foreground/80 font-medium hover:bg-muted/50"
                                                                                     ),
                                                                                     onClick: () => setExpandedSection(isSectionExposed ? null : section.title),
                                                                                     children: [
-                                                                                        jsx("span", { className: "text-sm", children: section.title }),
+                                                                                        jsx("span", { className: "text-[15px]", children: section.title }),
                                                                                         jsx("div", {
-                                                                                            className: classNames("transition-transform duration-300 opacity-50", isSectionExposed ? "rotate-90" : ""),
-                                                                                            children: jsx(ChevronRight, { className: "h-3 w-3" })
+                                                                                            className: classNames("transition-transform duration-300 ml-auto opacity-30", isSectionExposed ? "rotate-90" : ""),
+                                                                                            children: jsx(ChevronRight, { className: "h-3.5 w-3.5" })
                                                                                         })
                                                                                     ]
                                                                                 }),
 
-                                                                                // 3. ITEMS - Pure text items with clear depth
+                                                                                // 3. ITEMS (Indent: 32px)
                                                                                 isSectionExposed && jsxs("div", {
-                                                                                    className: "flex flex-col mt-1 ml-4 border-l border-primary/20",
+                                                                                    className: "flex flex-col border-l-2 border-primary/10 ml-10",
                                                                                     children: [
                                                                                         section.children?.map((item, iIdx) =>
                                                                                             jsx(Link, {
                                                                                                 to: item.href || `/${cat.id}/${item.id}`,
-                                                                                                className: "flex items-center w-full min-h-[44px] px-6 py-2 text-[15px] font-medium text-muted-foreground/80 hover:text-primary transition-colors active:text-primary",
+                                                                                                className: "flex items-center w-full min-h-[44px] pl-6 pr-6 py-2 text-[15px] font-medium text-muted-foreground/80 hover:text-primary transition-colors active:text-primary",
                                                                                                 children: item.title
                                                                                             }, iIdx)
                                                                                         )
@@ -218,7 +212,7 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                                                             ]
                                                                         }, sIdx);
                                                                     })
-                                                                    : jsx("div", { className: "p-6 text-center text-xs text-muted-foreground animate-pulse", children: "Fetching sub-categories..." })
+                                                                    : jsx("div", { className: "py-6 pl-10 text-[13px] text-muted-foreground/60", children: "Syncing..." })
                                                             ]
                                                         })
                                                     ]
