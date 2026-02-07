@@ -1,0 +1,18 @@
+{
+  "categories": [
+    {
+      "id": "java",
+      "title": "Java",
+      "heading": "Java Interview Questions",
+      "defaultPage": "java-beginner",
+      "dataFile": "/navigation/categories/java.json"
+    },
+    {
+      "id": "system-design",
+      "title": "System Design",
+      "heading": "System Design Interview Questions",
+      "defaultPage": "scaling-writes",
+      "dataFile": "/navigation/categories/system-design.json"
+    }
+  ]
+}

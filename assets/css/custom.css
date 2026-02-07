@@ -1,0 +1,9 @@
+/* Custom styles for light mode main text */
+:root:not(.dark) {
+    color: #161C24;
+}
+
+/* Also apply to other text elements if needed, but user said 'main text' which usually implies paragraphs */
+:root:not(.dark) {
+    color: #161C24;
+}

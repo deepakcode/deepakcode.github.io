@@ -1,0 +1,15 @@
+{
+    "sections": [
+        {
+            "title": "System Design Patterns",
+            "icon": "layers",
+            "children": [
+                {
+                    "id": "scaling-writes",
+                    "title": "Scaling Writes",
+                    "page": "pages/system-design/patterns/scaling-writes.md"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{{ page.title }}</title>
+<link rel="icon" href="/favicon.png">
+{% for f in site.static_files %}
+{% if f.path contains '.css' %}
+<link rel="stylesheet" href="{{ f.path }}">
+{% endif %}
+{% endfor %}
+</head>
+<body>
+{% include app.html %}
+</body>
+</html>

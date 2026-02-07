@@ -1,0 +1,30 @@
+{
+    "sections": [
+        {
+            "title": "Interview Question Levels",
+            "icon": "layers",
+            "children": [
+                {
+                    "id": "java-beginner",
+                    "title": "Beginner",
+                    "page": "pages/java/interview-levels/beginner.md"
+                },
+                {
+                    "id": "java-intermediate",
+                    "title": "Intermediate",
+                    "page": "pages/java/interview-levels/intermediate.md"
+                },
+                {
+                    "id": "java-advanced",
+                    "title": "Advanced",
+                    "page": "pages/java/interview-levels/advanced.md"
+                },
+                {
+                    "id": "java-expert",
+                    "title": "Expert",
+                    "page": "pages/java/interview-levels/expert.md"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,20 @@
+title: Easy Interview
+email: deepak.vishwakarma@gmail.com
+description: >-
+  Easy Interview resources and guides.
+baseurl: ""
+url: "https://deepakcode.github.io"
+repository: "deepakcode"
+
+# Build settings
+markdown: kramdown
+theme: minima
+plugins:
+  - jekyll-feed
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/
+  - dist
