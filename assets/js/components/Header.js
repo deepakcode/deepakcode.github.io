@@ -151,8 +151,9 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                                     children: [
                                                         jsxs("button", {
                                                             className: classNames(
-                                                                "flex items-center w-full h-20 pr-4 py-[5px] rounded-none transition-colors text-left outline-none border-none bg-transparent cursor-pointer hover:bg-accent",
+                                                                "flex items-center w-full h-20 pr-4 py-1 rounded-none transition-colors text-left outline-none border-none bg-transparent cursor-pointer hover:bg-accent",
                                                                 "text-[30px] font-bold leading-tight", // Bold categories
+                                                                isExposed ? "text-primary" : "text-foreground",
                                                                 isExposed && expandedSection && "opacity-60"
                                                             ),
                                                             style: { paddingLeft: '16px' }, // Level 1
@@ -187,10 +188,10 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                                                             children: [
                                                                                 jsxs("button", {
                                                                                     className: classNames(
-                                                                                        "flex items-center w-full h-20 pr-4 py-[5px] rounded-none text-left transition-colors outline-none border-none bg-transparent cursor-pointer hover:bg-accent",
+                                                                                        "flex items-center w-full h-20 pr-4 py-1 rounded-none text-left transition-colors outline-none border-none bg-transparent cursor-pointer hover:bg-accent",
                                                                                         "text-[30px] font-normal leading-tight", // Absolute font parity
                                                                                         isSectionExposed ? "text-primary bg-primary/5" : "text-foreground/80",
-                                                                                        isSectionExposed ? "opacity-60":""
+                                                                                        isSectionExposed && "opacity-60"
                                                                                     ),
                                                                                     style: { paddingLeft: '32px' }, // Level 2
                                                                                     onClick: () => setExpandedSection(isSectionExposed ? null : section.title),
@@ -214,7 +215,7 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                                                                             return jsx(Link, {
                                                                                                 to: itemPath,
                                                                                                 className: classNames(
-                                                                                                    "flex items-center w-full min-h-[80px] pr-4 py-[5px] transition-colors text-left hover:bg-accent",
+                                                                                                    "flex items-center w-full min-h-[80px] pr-4 py-1 transition-colors text-left hover:bg-accent",
                                                                                                     "text-[30px] italic leading-tight", // Italic items
                                                                                                     isActive ? "text-primary font-medium" : "text-muted-foreground/80 hover:text-primary"
                                                                                                 ),
