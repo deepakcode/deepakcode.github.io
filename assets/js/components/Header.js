@@ -153,7 +153,7 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                                             className: classNames(
                                                                 "flex items-center w-full h-20 pr-4 py-[5px] rounded-none transition-colors text-left outline-none border-none bg-transparent cursor-pointer hover:bg-accent",
                                                                 "text-[30px] font-bold leading-tight", // Bold categories
-                                                                isExposed ? "text-primary" : "text-foreground"
+                                                                isExposed ? (expandedSection ? "text-primary/60" : "text-primary") : "text-foreground"
                                                             ),
                                                             style: { paddingLeft: '16px' }, // Level 1
                                                             onClick: () => {
