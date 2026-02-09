@@ -275,10 +275,6 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                         jsx("div", {
                             className: "hidden sm:flex items-center space-x-2",
                             children: [
-                                jsx("span", {
-                                    className: "text-[10px] font-medium text-muted-foreground opacity-50 select-none",
-                                    children: version
-                                }),
                                 jsx("a", {
                                     href: config.githubUrl,
                                     target: "_blank",
@@ -290,6 +286,10 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                             jsx("span", { className: "sr-only", children: "GitHub" }),
                                         ]
                                     }),
+                                }),
+                                jsx("span", {
+                                    className: "text-[10px] font-medium text-muted-foreground opacity-50 select-none",
+                                    children: version
                                 }),
                             ]
                         }),
