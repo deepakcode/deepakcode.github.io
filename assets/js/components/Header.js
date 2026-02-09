@@ -14,6 +14,15 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [expandedCategory, setExpandedCategory] = useState(currentCategory);
     const [expandedSection, setExpandedSection] = useState(null);
+    const [version, setVersion] = useState("v0.00");
+
+    // Fetch version number
+    useEffect(() => {
+        fetch('./version.json')
+            .then(res => res.json())
+            .then(data => setVersion(data.version))
+            .catch(err => console.error("Error fetching version:", err));
+    }, []);
 
     // Sync expandedCategory with currentCategory when it changes from outside (e.g. desktop)
     useEffect(() => {
@@ -263,17 +272,26 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                         // Dark mode toggle
                         jsx(ThemeToggle, {}),
                         // GitHub link
-                        jsx("a", {
-                            href: config.githubUrl,
-                            target: "_blank",
-                            rel: "noreferrer",
-                            className: "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 hidden sm:inline-flex",
-                            children: jsxs(React.Fragment, {
-                                children: [
-                                    jsx(GithubIcon, { className: "h-4 w-4" }),
-                                    jsx("span", { className: "sr-only", children: "GitHub" }),
-                                ]
-                            }),
+                        jsx("div", {
+                            className: "hidden sm:flex items-center space-x-2",
+                            children: [
+                                jsx("span", {
+                                    className: "text-[10px] font-medium text-muted-foreground opacity-50 select-none",
+                                    children: version
+                                }),
+                                jsx("a", {
+                                    href: config.githubUrl,
+                                    target: "_blank",
+                                    rel: "noreferrer",
+                                    className: "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9",
+                                    children: jsxs(React.Fragment, {
+                                        children: [
+                                            jsx(GithubIcon, { className: "h-4 w-4" }),
+                                            jsx("span", { className: "sr-only", children: "GitHub" }),
+                                        ]
+                                    }),
+                                }),
+                            ]
                         }),
                     ],
                 }),
