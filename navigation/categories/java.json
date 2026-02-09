@@ -25,6 +25,17 @@
                     "page": "pages/java/interview-levels/expert.md"
                 }
             ]
+        },
+        {
+          "title": "Blogs",
+          "icon": "blogs",
+          "children": [
+            {
+              "id": "multi-threading",
+              "title": "Multi Threading",
+              "page": "/pages/java/blogs/multi-threading.md"
+            }
+          ]
         }
     ]
 }
