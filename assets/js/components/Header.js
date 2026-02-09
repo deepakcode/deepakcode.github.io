@@ -152,7 +152,7 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                                         jsxs("button", {
                                                             className: classNames(
                                                                 "flex items-center w-full h-20 pr-4 py-[5px] rounded-none transition-colors text-left outline-none border-none bg-transparent cursor-pointer hover:bg-accent",
-                                                                "text-[30px] font-normal leading-tight", // Absolute font parity
+                                                                "text-[30px] font-bold leading-tight", // Bold categories
                                                                 isExposed ? "text-primary" : "text-foreground"
                                                             ),
                                                             style: { paddingLeft: '16px' }, // Level 1
@@ -214,7 +214,7 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                                                                                 to: itemPath,
                                                                                                 className: classNames(
                                                                                                     "flex items-center w-full min-h-[80px] pr-4 py-[5px] transition-colors text-left hover:bg-accent",
-                                                                                                    "text-[30px] font-normal leading-tight", // Absolute font parity
+                                                                                                    "text-[30px] italic leading-tight", // Italic items
                                                                                                     isActive ? "text-primary font-medium" : "text-muted-foreground/80 hover:text-primary"
                                                                                                 ),
                                                                                                 style: { paddingLeft: '48px' }, // Level 3
