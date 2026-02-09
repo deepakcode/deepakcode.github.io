@@ -151,7 +151,7 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                                     children: [
                                                         jsxs("button", {
                                                             className: classNames(
-                                                                "flex items-center w-full h-20 pr-4 rounded-none transition-colors text-left outline-none border-none bg-transparent cursor-pointer hover:bg-accent",
+                                                                "flex items-center w-full h-20 pr-4 py-[5px] rounded-none transition-colors text-left outline-none border-none bg-transparent cursor-pointer hover:bg-accent",
                                                                 "text-[30px] font-normal leading-tight", // Absolute font parity
                                                                 isExposed ? "text-primary" : "text-foreground"
                                                             ),
@@ -187,7 +187,7 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                                                             children: [
                                                                                 jsxs("button", {
                                                                                     className: classNames(
-                                                                                        "flex items-center w-full h-20 pr-4 rounded-none text-left transition-colors outline-none border-none bg-transparent cursor-pointer hover:bg-accent",
+                                                                                        "flex items-center w-full h-20 pr-4 py-[2px] rounded-none text-left transition-colors outline-none border-none bg-transparent cursor-pointer hover:bg-accent",
                                                                                         "text-[30px] font-normal leading-tight", // Absolute font parity
                                                                                         isSectionExposed ? "text-primary bg-primary/5" : "text-foreground/80"
                                                                                     ),
@@ -213,7 +213,7 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                                                                             return jsx(Link, {
                                                                                                 to: itemPath,
                                                                                                 className: classNames(
-                                                                                                    "flex items-center w-full min-h-[80px] pr-4 transition-colors text-left hover:bg-accent",
+                                                                                                    "flex items-center w-full min-h-[80px] pr-4 py-[2px] transition-colors text-left hover:bg-accent",
                                                                                                     "text-[30px] font-normal leading-tight", // Absolute font parity
                                                                                                     isActive ? "text-primary font-medium" : "text-muted-foreground/80 hover:text-primary"
                                                                                                 ),
