@@ -1,6 +1,6 @@
 /* Custom styles for light mode main text */
 :root:not(.dark) {
-    color: #111827;
+    color: #161C24;
 }
 
 .italic {

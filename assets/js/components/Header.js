@@ -153,7 +153,6 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                                             className: classNames(
                                                                 "flex items-center w-full h-20 pr-4 py-[5px] rounded-none transition-colors text-left outline-none border-none bg-transparent cursor-pointer hover:bg-accent",
                                                                 "text-[30px] font-bold leading-tight", // Bold categories
-                                                                isExposed ? "text-primary" : "text-foreground",
                                                                 isExposed && expandedSection && "opacity-60"
                                                             ),
                                                             style: { paddingLeft: '16px' }, // Level 1
@@ -190,7 +189,8 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                                                                     className: classNames(
                                                                                         "flex items-center w-full h-20 pr-4 py-[5px] rounded-none text-left transition-colors outline-none border-none bg-transparent cursor-pointer hover:bg-accent",
                                                                                         "text-[30px] font-normal leading-tight", // Absolute font parity
-                                                                                        isSectionExposed ? "text-primary bg-primary/5" : "text-foreground/80"
+                                                                                        isSectionExposed ? "text-primary bg-primary/5" : "text-foreground/80",
+                                                                                        isSectionExposed ? "opacity-60":""
                                                                                     ),
                                                                                     style: { paddingLeft: '32px' }, // Level 2
                                                                                     onClick: () => setExpandedSection(isSectionExposed ? null : section.title),
