@@ -10,7 +10,7 @@ const GithubIcon = (props) => jsx("svg", { ...props, xmlns: "http://www.w3.org/2
 const CloseIcon = (props) => jsx("svg", { ...props, xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", children: jsxs("g", { children: [jsx("line", { x1: "18", x2: "6", y1: "6", y2: "18" }), jsx("line", { x1: "6", x2: "18", y1: "6", y2: "18" })] }) });
 
 export default function Header({ categories = [], currentCategory, onCategoryChange, categoryData }) {
-    const config = window.EasyInterview?.SITE_CONFIG || { name: "Easy Interview", shortName: "EI", githubUrl: "#" };
+    const config = window.EasyInterview?.SITE_CONFIG || { name: "Easy Interview", shortName: "Easy Interview", githubUrl: "#" };
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [expandedCategory, setExpandedCategory] = useState(currentCategory);
     const [expandedSection, setExpandedSection] = useState(null);
@@ -133,11 +133,6 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                     children: jsxs("div", {
                                         className: "flex flex-col",
                                         children: [
-                                            jsx("h2", {
-                                                className: "text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 px-6 mb-4",
-                                                children: "Navigation Menu"
-                                            }),
-
                                             // 1. TOP-LEVEL CATEGORIES (Leftmost: 16px)
                                             categories.map(cat => {
                                                 const isExposed = expandedCategory === cat.id;
@@ -147,8 +142,8 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                                     children: [
                                                         jsxs("button", {
                                                             className: classNames(
-                                                                "flex items-center w-full h-11 pr-4 rounded-none transition-colors text-left outline-none border-none bg-transparent cursor-pointer",
-                                                                "text-[15px] font-normal leading-tight", // Absolute font parity
+                                                                "flex items-center w-full h-20 pr-4 rounded-none transition-colors text-left outline-none border-none bg-transparent cursor-pointer",
+                                                                "text-[30px] font-normal leading-tight", // Absolute font parity
                                                                 isExposed ? "text-primary" : "text-foreground"
                                                             ),
                                                             style: { paddingLeft: '16px' }, // Level 1
@@ -183,8 +178,8 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                                                             children: [
                                                                                 jsxs("button", {
                                                                                     className: classNames(
-                                                                                        "flex items-center w-full h-11 pr-4 rounded-none text-left transition-colors outline-none border-none bg-transparent cursor-pointer",
-                                                                                        "text-[15px] font-normal leading-tight", // Absolute font parity
+                                                                                        "flex items-center w-full h-20 pr-4 rounded-none text-left transition-colors outline-none border-none bg-transparent cursor-pointer",
+                                                                                        "text-[30px] font-normal leading-tight", // Absolute font parity
                                                                                         isSectionExposed ? "text-primary bg-primary/5" : "text-foreground/80 hover:bg-muted/30"
                                                                                     ),
                                                                                     style: { paddingLeft: '32px' }, // Level 2
@@ -206,8 +201,8 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                                                                             jsx(Link, {
                                                                                                 to: item.href || `/${cat.id}/${item.id}`,
                                                                                                 className: classNames(
-                                                                                                    "flex items-center w-full min-h-[44px] pr-4 transition-colors text-left",
-                                                                                                    "text-[15px] font-normal leading-tight", // Absolute font parity
+                                                                                                    "flex items-center w-full min-h-[80px] pr-4 transition-colors text-left",
+                                                                                                    "text-[30px] font-normal leading-tight", // Absolute font parity
                                                                                                     "text-muted-foreground/80 hover:text-primary"
                                                                                                 ),
                                                                                                 style: { paddingLeft: '48px' }, // Level 3
@@ -219,7 +214,7 @@ export default function Header({ categories = [], currentCategory, onCategoryCha
                                                                             ]
                                                                         }, sIdx);
                                                                     })
-                                                                    : jsx("div", { className: "py-4 text-[13px] text-muted-foreground/60", style: { paddingLeft: '32px' }, children: "Loading..." })
+                                                                    : jsx("div", { className: "py-4 text-[26px] text-muted-foreground/60", style: { paddingLeft: '32px' }, children: "Loading..." })
                                                             ]
                                                         })
                                                     ]
